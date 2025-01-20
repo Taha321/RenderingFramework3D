@@ -55,10 +55,10 @@ Replace `<path_to_vulkan_sdk>` with the path to your installed Vulkan SDK
 ### Output
 
 After a successful build:
-- A static library will be generated in the `build/lib` directory:
+- A static library will be generated in the `build/output/lib` directory:
   - **Windows**: `rfw3d.lib`
   - **Linux**: `librfw3d.a`
-- Test programs will be available in the `build/bin` directory:
+- Test programs will be available in the `build/output/bin` directory:
   - The source files for these tests can be found in the `test/` directory.
   - These examples demonstrate the use of the **RenderingFramework3D** API.
 

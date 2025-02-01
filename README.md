@@ -52,6 +52,14 @@ cmake --build ./
 ```
 Replace `<path_to_vulkan_sdk>` with the path to your installed Vulkan SDK
 
+3.  (Optional) To build additional test programs that demonstrate specific framework features, run:
+```bash
+cmake .. -DVULKAN_DIR=<path_to_vulkan_sdk> -DENABLE_TESTS=ON
+cmake --build ./
+```
+These test programs serve as usage examples for the framework's API.
+
+
 ### Output
 
 After a successful build:

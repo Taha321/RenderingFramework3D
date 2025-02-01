@@ -13,7 +13,7 @@
 using namespace std::chrono;
 
 using namespace RenderingFramework3D;
-using namespace RenderingFramework3D::MathUtil;
+using namespace MathUtil;
 
 
 

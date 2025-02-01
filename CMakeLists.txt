@@ -5,9 +5,11 @@ set (CMAKE_CXX_STANDARD 14)
 
 set(CMAKE_BUILD_TYPE "Release" CACHE STRING "" FORCE)
 
+option(ENABLE_TESTS "Enable building tests" OFF)
+
 # Set output directories for libraries and executables
-set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/output/lib)
-set(CMAKE_LIBRARY_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/output/lib)
+set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY $<1:${CMAKE_BINARY_DIR}/output/lib>)
+set(CMAKE_LIBRARY_OUTPUT_DIRECTORY $<1:${CMAKE_BINARY_DIR}/output/lib>)
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY $<1:${CMAKE_BINARY_DIR}/output/bin>)
 
 # Include Vulkan headers
@@ -15,21 +17,21 @@ include_directories(rfw3d ${VULKAN_DIR}/include)
 include_directories(rfw3d ${VULKAN_DIR}/x86_64/include)
 
 # Include project headers
-include_directories(${CMAKE_SOURCE_DIR}/include)
-include_directories(rfw3d ${CMAKE_SOURCE_DIR}/src/core)
-include_directories(rfw3d ${CMAKE_SOURCE_DIR}/src/common)
-include_directories(rfw3d ${CMAKE_SOURCE_DIR}/src/backend)
-include_directories(rfw3d ${CMAKE_SOURCE_DIR}/src/api)
-include_directories(rfw3d ${CMAKE_SOURCE_DIR}/lib/glfw/include)
+include_directories(include)
+include_directories(rfw3d src/core)
+include_directories(rfw3d src/common)
+include_directories(rfw3d src/backend)
+include_directories(rfw3d src/api)
+include_directories(rfw3d lib/glfw/include)
 
 # link directories
-link_directories(rfw3d ${CMAKE_SOURCE_DIR}/lib/glfw/x86_64)
-link_directories(${VULKAN_DIR}/Lib)
-link_directories(${VULKAN_DIR}/x86_64/lib)
+link_directories(rfw3d lib/glfw/x86_64)
+link_directories(rfw3d ${VULKAN_DIR}/Lib)
+link_directories(rfw3d ${VULKAN_DIR}/x86_64/lib)
 
 # Source files (excluding test_scene.cpp)
 file(GLOB_RECURSE SRC_FILES
-    ${CMAKE_SOURCE_DIR}/src/*.cpp
+    src/*.cpp
 )
 
 # Add static library
@@ -45,20 +47,22 @@ elseif(UNIX)
     target_link_libraries(rfw3d vulkan)
 endif()
 
-#build base test scene
-add_executable(basetest ${CMAKE_SOURCE_DIR}/test/basetest/test_scene.cpp)
+if(ENABLE_TESTS)
+    #build base test scene
+    add_executable(basetest test/basetest/test_scene.cpp)
 
-#link test scene with rendering framework library
-target_link_libraries(basetest rfw3d)
+    #link test scene with rendering framework library
+    target_link_libraries(basetest rfw3d)
 
-#build test custompipeline test scene
-add_executable(cpltest ${CMAKE_SOURCE_DIR}/test/custompipelinetest/test_scene.cpp)
+    #build test custompipeline test scene
+    add_executable(cpltest test/custompipelinetest/test_scene.cpp)
 
-#link test scene with rendering framework library
-target_link_libraries(cpltest rfw3d)
+    #link test scene with rendering framework library
+    target_link_libraries(cpltest rfw3d)
 
-#build test custompipeline test scene
-add_executable(dynmeshtest ${CMAKE_SOURCE_DIR}/test/dynmeshtest/test_scene.cpp)
+    #build test custompipeline test scene
+    add_executable(dynmeshtest test/dynmeshtest/test_scene.cpp)
 
-#link test scene with rendering framework library
-target_link_libraries(dynmeshtest rfw3d)
+    #link test scene with rendering framework library
+    target_link_libraries(dynmeshtest rfw3d)
+endif()

@@ -4,6 +4,7 @@
 #include <string>
 #include <array>
 #include <thread>
+#include <filesystem>
 #include "matrix.h"
 #include "window.h"
 #include "renderer.h"
@@ -16,6 +17,7 @@ using namespace RenderingFramework3D;
 using namespace MathUtil;
 
 static int renderer_test();
+static std::string get_bin_dir();
 
 int main() {
     return renderer_test();
@@ -68,8 +70,8 @@ static int renderer_test() {
     PipelineConfig lightplcfg;
 	lightplcfg.useDefaultShaders = false;
 	lightplcfg.useDefaultVertData = false;
-    lightplcfg.customVertexShaderPath = "../test/custompipelinetest/shaders/lightvert.spv";
-    lightplcfg.customFragmentShaderPath = "../test/custompipelinetest/shaders/lightfrag.spv";
+    lightplcfg.customVertexShaderPath = get_bin_dir() + "/../../../test/custompipelinetest/shaders/lightvert.spv";
+    lightplcfg.customFragmentShaderPath = get_bin_dir() + "/../../../test/custompipelinetest/shaders/lightfrag.spv";
     lightplcfg.uniformShaderInputLayout.ObjectInputs.useMaterialData = false;
     lightplcfg.uniformShaderInputLayout.ObjectInputs.CustomUniformShaderInput.push_back({false, true, sizeof(LightProperties), 1});
     lightplcfg.uniformShaderInputLayout.GlobalInputs.useDirectionalLight = false;
@@ -86,8 +88,8 @@ static int renderer_test() {
     PipelineConfig objplcfg;
 	objplcfg.useDefaultShaders = false;
 	objplcfg.useDefaultVertData = false;
-    objplcfg.customVertexShaderPath = "../test/custompipelinetest/shaders/objvert.spv";
-    objplcfg.customFragmentShaderPath = "../test/custompipelinetest/shaders/objfrag.spv";
+    objplcfg.customVertexShaderPath = get_bin_dir() + "/../../../test/custompipelinetest/shaders/objvert.spv";
+    objplcfg.customFragmentShaderPath = get_bin_dir() + "/../../../test/custompipelinetest/shaders/objfrag.spv";
     objplcfg.uniformShaderInputLayout.GlobalInputs.CustomUniformShaderInput.push_back({false, true, sizeof(LightInfo), 1});
     
     unsigned objPipeline=(unsigned)-1;
@@ -283,4 +285,32 @@ static int renderer_test() {
     }
 
     return 0;
+}
+
+#if defined(_WIN32)
+    #include <windows.h>
+#elif defined(__linux__)
+    #include <unistd.h>
+#endif
+std::string get_bin_dir() {
+    static std::string binDir;
+
+    if(binDir.length() > 0) {
+        return binDir;
+    }
+
+    char binPath[1024];
+    #if defined(_WIN32)
+        GetModuleFileNameA(NULL, binPath, sizeof(binPath));
+    #elif defined(__linux__)
+        ssize_t count = readlink("/proc/self/exe", binPath, sizeof(binPath) - 1);
+        if (count != -1) {
+            binPath[count] = '\0'; // Null-terminate the string
+        } else {
+            throw std::runtime_error("Failed to retrieve executable path");
+        }
+    #endif
+
+    binDir = std::filesystem::path(binPath).parent_path().string();
+    return binDir;
 }

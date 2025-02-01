@@ -163,7 +163,7 @@ void Renderer::RendererInternal::SetLightColour(unsigned pipeline, const Vec<4>&
 
 void Renderer::RendererInternal::SetLightIntensity(float intensity) {
 	for(auto& pipeline : _pipelines) {
-		pipeline.SetLightIntensity(intensity);
+		pipeline.SetLightIntensity(intensity/10);
 	}
 }
 void Renderer::RendererInternal::SetLightIntensity(unsigned pipeline, float intensity) {
@@ -195,6 +195,10 @@ bool Renderer::RendererInternal::DrawObject(const WorldObject& obj, Camera& cam,
 		if (pipelineID >= _pipelines.size()) {
 			return false;
 		}
+		if(obj.GetMesh()._internal == nullptr) {
+			return false;
+		}
+		
 		bool first = _draw_state.startPass;
 		if (_draw_state.startPass ) {
 

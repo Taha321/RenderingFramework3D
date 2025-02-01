@@ -81,10 +81,10 @@ static int renderer_test() {
     }
 
 //  set default global uniform shader inputs including directional and ambient lights
-    renderer.SetLightDirection(PIPELINE_SHADED, Vec<3>({1,0,0}));
-    renderer.SetLightColour(PIPELINE_SHADED, Vec<4>({1,1,1,1}));
-    renderer.SetLightIntensity(PIPELINE_SHADED, 1);
-    renderer.SetAmbientLightIntensity(PIPELINE_SHADED, 0.06);
+    renderer.SetLightDirection(Vec<3>({1,0,0}));
+    renderer.SetLightColour(Vec<4>({1,1,1,1}));
+    renderer.SetLightIntensity(1);
+    renderer.SetAmbientLightIntensity(0.06);
 
 //  set cursor visibility
     wnd.SetMouseVisibility(false);

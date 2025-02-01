@@ -6,9 +6,6 @@
 #include <cmath>
 
 
-
-namespace RenderingFramework3D {
-
 namespace MathUtil {
 template <unsigned size>
 class Vec
@@ -167,5 +164,4 @@ inline Vec<3> Cross(const Vec<3>& v1, const Vec<3>& v2) {
 	return result;
 }
 
-}
 }

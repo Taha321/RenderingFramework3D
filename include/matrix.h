@@ -3,7 +3,6 @@
 #include "vec.h"
 
 
-namespace RenderingFramework3D {
 namespace MathUtil {
 
 template <unsigned rows, unsigned columns>
@@ -138,6 +137,5 @@ Matrix<dim, dim> GetIdentity() {
 template<unsigned rows, unsigned columns>
 Matrix<rows, columns> operator*(float c, const Matrix<rows, columns>& mat) {
 	return (mat * c);
-}
 }
 }

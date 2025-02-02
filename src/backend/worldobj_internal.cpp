@@ -116,12 +116,8 @@ void WorldObject::WorldObjectInternal::SetScaleZ(float z) {
     _scale(2) = z;
 }
 
-void WorldObject::WorldObjectInternal::SetTransform(const MathUtil::Matrix<4,4>& transform) {
-    _transform = transform;
-}
-
-Vec<4> WorldObject::WorldObjectInternal::GetPosition() const {
-    return Vec<4>({_transform(0,3), _transform(1,3), _transform(2,3), _transform(3,3)});
+Vec<3> WorldObject::WorldObjectInternal::GetPosition() const {
+    return Vec<3>({_transform(0,3), _transform(1,3), _transform(2,3)});
 }
 
 const Vec<4>& WorldObject::WorldObjectInternal::GetObjectScale() const {

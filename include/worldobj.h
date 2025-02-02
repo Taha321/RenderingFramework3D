@@ -46,20 +46,24 @@ public:
 	void SetScaleY(float y);
 	void SetScaleZ(float z);
 
-	void SetTransform(const MathUtil::Matrix<4,4>& transform);
-
 	Material& GetMaterial();
 	const Material& GetMaterial() const;
 
 	//must follow glsl alignment requirements for uniform buffer objects
 	void SetCustomUniformShaderInputData(unsigned binding, const void* data, unsigned bytes, unsigned offset=0);
 
-	MathUtil::Vec<4> GetPosition() const;
+	MathUtil::Vec<3> GetPosition() const;
 	const MathUtil::Vec<4>& GetObjectScale() const;
 	const MathUtil::Matrix<4,4>& GetTransform() const;
 	const std::vector<uint8_t>& GetCustomData(unsigned binding) const;
 
 	Mesh GetMesh() const;
+
+private:
+	//executed before rescaling, rotation or displacement
+	virtual void OnRescale(float x, float y, float z) {}
+	virtual void OnRotate(const MathUtil::Vec<3>& axis, float radians) {}
+	virtual void OnMove(const MathUtil::Vec<3>& position) {}
 
 private:
 	friend Renderer;

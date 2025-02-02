@@ -133,7 +133,8 @@ static int renderer_test() {
 
 //  Custom data describing spherical light, used as uniform input for objects and light pipelines 
     LightProperties lightProperties = { Vec<4>({0.2,0.5,0.3,1}), 9.500000,7.399995};
-    LightInfo lightInfo = {spherelight.GetPosition(), lightProperties};
+    auto position = spherelight.GetPosition();
+    LightInfo lightInfo = {Vec<4>({position(0),position(1),position(2),1}), lightProperties};
     renderer.SetCustomGlobalUniformShaderData(objPipeline, 1, &lightInfo, sizeof(lightInfo), 0);
     spherelight.SetCustomUniformShaderInputData(1, &lightProperties, sizeof(lightProperties), 0);
     
@@ -231,7 +232,8 @@ static int renderer_test() {
         spherelight.SetCustomUniformShaderInputData(1,&lightProperties.Intensity, sizeof(lightProperties.Intensity), offsetof(LightProperties, Intensity));
         spherelight.SetCustomUniformShaderInputData(1,&lightProperties.Radius, sizeof(lightProperties.Radius), offsetof(LightProperties, Radius));
         
-        LightInfo lightInfo = {spherelight.GetPosition(), lightProperties};
+         auto position = spherelight.GetPosition();
+        LightInfo lightInfo = {Vec<4>({position(0),position(1),position(2),1}), lightProperties};
         renderer.SetCustomGlobalUniformShaderData(objPipeline, 1, &lightInfo, sizeof(lightInfo), 0);
 
     //  Draw Objects

@@ -53,12 +53,11 @@ public:
 		return result;
 	}
 	
-	Vec<rows> operator*(const Vec<rows>& v) const {
-		Vec<rows> result;
+	Vec<columns> operator*(const Vec<columns>& v) const {
+		Vec<rows> result(0);
 		for (unsigned i = 0; i < rows; i++) {
-			result(i) = 0.0f;
 			for (unsigned k = 0; k < columns; k++) {
-				result(i) += _data[k * rows + i] * v(i);
+				result(i) += _data[k * rows + i] * v(k);
 			}
 		}
 		return result;

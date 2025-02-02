@@ -60,6 +60,7 @@ void WorldObject::SetPosition(const Vec<3>& position) {
 }
 
 void WorldObject::Move(const Vec<3>& displacement) {
+    OnMove(GetPosition()+displacement);
     _internal->Move(displacement);
 }
 
@@ -68,27 +69,31 @@ void WorldObject::SetCustomUniformShaderInputData(unsigned binding, const void* 
 }
 
 void WorldObject::Rotate(const Vec<3>& axis, float radians) {
+    OnRotate(axis, radians);
     _internal->Rotate(axis, radians);
 }
 
 void WorldObject::SetScale(float x, float y, float z) {
+    OnRescale(x,y,z);
     _internal->SetScale(x,y,z);
 }
 void WorldObject::SetScaleX(float x) {
+    auto& scale = GetObjectScale();
+    OnRescale(x,scale(1),scale(2));
     _internal->SetScaleX(x);
 }
 void WorldObject::SetScaleY(float y) {
+    auto& scale = GetObjectScale();
+    OnRescale(scale(0),y,scale(2));
     _internal->SetScaleY(y);
 }
 void WorldObject::SetScaleZ(float z) {
+    auto& scale = GetObjectScale();
+    OnRescale(scale(0),scale(1),z);
     _internal->SetScaleZ(z);
 }
 
-void WorldObject::SetTransform(const MathUtil::Matrix<4,4>& transform) {
-    _internal->SetTransform(transform);
-}
-
-Vec<4> WorldObject::GetPosition() const {
+Vec<3> WorldObject::GetPosition() const {
     return _internal->GetPosition();
 }
 

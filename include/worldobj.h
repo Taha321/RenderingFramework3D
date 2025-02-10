@@ -38,23 +38,36 @@ public:
 	void SetBackFaceCulling(bool enable);
 	bool GetBackFaceCulling() const;
 
+	// movement and rotation wrt. parent object frame
 	void SetPosition(const MathUtil::Vec<3>& position);
 	void Move(const MathUtil::Vec<3>& displacement);
 	void Rotate(const MathUtil::Vec<3>& axis, float radians);
+
+	// scale object
 	void SetScale(float x, float y, float z);
 	void SetScaleX(float x);
 	void SetScaleY(float y);
 	void SetScaleZ(float z);
 
+	// attach a parent object reference frame
+	void AttachReferenceFrame(const WorldObject& ref);
+	void DetachReferenceFrame();
+
 	Material& GetMaterial();
 	const Material& GetMaterial() const;
 
-	//must follow glsl alignment requirements for uniform buffer objects
+	// must follow glsl alignment requirements for uniform buffer objects
 	void SetCustomUniformShaderInputData(unsigned binding, const void* data, unsigned bytes, unsigned offset=0);
 
+	// transform and position in world reference frame
 	MathUtil::Vec<3> GetPosition() const;
+	MathUtil::Matrix<4,4> GetTransform() const;
+
+	// transform and postition wrt. parent object frame
+	MathUtil::Vec<3> GetLocalPosition() const;
+	const MathUtil::Matrix<4,4>& GetLocalTransform() const;
+
 	const MathUtil::Vec<4>& GetObjectScale() const;
-	const MathUtil::Matrix<4,4>& GetTransform() const;
 	const std::vector<uint8_t>& GetCustomData(unsigned binding) const;
 
 	Mesh GetMesh() const;
@@ -69,6 +82,6 @@ private:
 	friend Renderer;
 
 	class WorldObjectInternal;
-	std::unique_ptr<WorldObjectInternal> _internal;
+	std::shared_ptr<WorldObjectInternal> _internal;
 };
 }

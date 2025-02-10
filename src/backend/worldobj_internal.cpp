@@ -116,17 +116,40 @@ void WorldObject::WorldObjectInternal::SetScaleZ(float z) {
     _scale(2) = z;
 }
 
+void WorldObject::WorldObjectInternal::AttachReferenceFrame(const std::shared_ptr<WorldObjectInternal>& ref) {
+    _parent = std::const_pointer_cast<const WorldObjectInternal>(ref);
+}
+
+void WorldObject::WorldObjectInternal::DetachReferenceFrame() {
+    _parent.reset();
+}
+
 Vec<3> WorldObject::WorldObjectInternal::GetPosition() const {
+    if(auto ref = _parent.lock()) {
+        return ref->GetPosition() + Vec<3>({_transform(0,3), _transform(1,3), _transform(2,3)});
+    }
     return Vec<3>({_transform(0,3), _transform(1,3), _transform(2,3)});
+}
+
+Vec<3> WorldObject::WorldObjectInternal::GetLocalPosition() const {
+    return Vec<3>({_transform(0,3), _transform(1,3), _transform(2,3)});
+}
+
+Matrix<4,4> WorldObject::WorldObjectInternal::GetTransform() const {
+    if(auto ref = _parent.lock()) {
+        return ref->GetTransform() * _transform;
+    }
+    return _transform;
+}
+
+const Matrix<4, 4>& WorldObject::WorldObjectInternal::GetLocalTransform() const {
+    return _transform;
 }
 
 const Vec<4>& WorldObject::WorldObjectInternal::GetObjectScale() const {
     return _scale;
 }
 
-const Matrix<4, 4>& WorldObject::WorldObjectInternal::GetTransform() const {
-    return _transform;
-}
 
 Material& WorldObject::WorldObjectInternal::GetMaterial() {
     return _material;

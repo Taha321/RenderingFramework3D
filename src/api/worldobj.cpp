@@ -9,22 +9,22 @@ namespace RenderingFramework3D {
 using namespace MathUtil;
 
 WorldObject::WorldObject() {
-    _internal = std::make_unique<WorldObjectInternal>();
+    _internal = std::make_shared<WorldObjectInternal>();
 }
 
 WorldObject::WorldObject(Mesh& mesh) {
-    _internal = std::make_unique<WorldObjectInternal>(mesh._internal);
+    _internal = std::make_shared<WorldObjectInternal>(mesh._internal);
 }
 
 WorldObject::WorldObject(WorldObject& src) {
-    _internal = std::make_unique<WorldObjectInternal>(*src._internal);
+    _internal = std::make_shared<WorldObjectInternal>(*src._internal);
 }
 WorldObject::WorldObject(WorldObject&& src) {
     _internal = std::move(src._internal);
 }
 
 WorldObject& WorldObject::operator=(WorldObject& src) {
-    _internal = std::make_unique<WorldObjectInternal>(*src._internal);
+    _internal = std::make_shared<WorldObjectInternal>(*src._internal);
     return *this;
 }
 WorldObject& WorldObject::operator=(WorldObject&& src) {
@@ -93,16 +93,32 @@ void WorldObject::SetScaleZ(float z) {
     _internal->SetScaleZ(z);
 }
 
+void WorldObject::AttachReferenceFrame(const WorldObject& ref) {
+    _internal->AttachReferenceFrame(ref._internal);
+}
+
+void WorldObject::DetachReferenceFrame() {
+    _internal->DetachReferenceFrame();
+}
+
 Vec<3> WorldObject::GetPosition() const {
     return _internal->GetPosition();
+}
+
+Vec<3> WorldObject::GetLocalPosition() const {
+    return _internal->GetLocalPosition();
+}
+
+Matrix<4,4> WorldObject::GetTransform() const {
+    return _internal->GetTransform();
 }
 
 const Vec<4>& WorldObject::GetObjectScale() const {
     return _internal->GetObjectScale();
 }
 
-const Matrix<4, 4>& WorldObject::GetTransform() const {
-    return _internal->GetTransform();
+const Matrix<4, 4>& WorldObject::GetLocalTransform() const {
+    return _internal->GetLocalTransform();
 }
 
 Material& WorldObject::GetMaterial() {

@@ -163,12 +163,14 @@ bool Pipeline::AddCommandBindUniformBufferSet(VkCommandBuffer cmdBuffer, const W
         if (dst == nullptr) {
             return false;
         }
-        //object to world transform
+
+        Matrix<4,4> transfrom = obj.GetTransform();
+        // object to world transform
         if (_uniform_shader_input_layout.layout.ObjectInputs.useObjToWorldTransform) {
-            obj.GetTransform().CopyRaw(dst_f);
+            transfrom.CopyRaw(dst_f);
             dst_f += 16;
         }
-        //world to camera transform
+        // world to camera transform
         if (_uniform_shader_input_layout.layout.ObjectInputs.useWorldToCamTransform) {
             cam.GetWorldToCameraTransform().CopyRaw(dst_f);
             dst_f += 16;
@@ -181,7 +183,7 @@ bool Pipeline::AddCommandBindUniformBufferSet(VkCommandBuffer cmdBuffer, const W
 
         //cam.GetCamToScreenTransform().Print();
         //object to screen tranform
-        Matrix<4,4> o_to_s = cam.GetCamToScreenTransform() * cam.GetWorldToCameraTransform() * obj.GetTransform();
+        Matrix<4,4> o_to_s = cam.GetCamToScreenTransform() * cam.GetWorldToCameraTransform() * transfrom;
         if (_uniform_shader_input_layout.layout.ObjectInputs.useObjToScreenTransform) {
             o_to_s.CopyRaw(dst_f);
             dst_f += 16;

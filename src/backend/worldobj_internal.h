@@ -34,6 +34,9 @@ public:
 	void SetScaleY(float y);
 	void SetScaleZ(float z);
 
+	void AttachReferenceFrame(const std::shared_ptr<WorldObjectInternal>& ref);
+	void DetachReferenceFrame();
+
 	Material& GetMaterial();
 	const Material& GetMaterial() const;
 
@@ -41,12 +44,15 @@ public:
 	void SetCustomUniformShaderInputData(unsigned binding, const void* data, unsigned bytes, unsigned offset=0);
 
 	MathUtil::Vec<3> GetPosition() const;
+	MathUtil::Matrix<4,4> GetTransform() const;
+	
+	MathUtil::Vec<3> GetLocalPosition() const;
+	const MathUtil::Matrix<4,4>& GetLocalTransform() const;
+
 	const MathUtil::Vec<4>& GetObjectScale() const;
-	const MathUtil::Matrix<4,4>& GetTransform() const;
 	const std::vector<uint8_t>& GetCustomData(unsigned binding) const;
 
 	const std::shared_ptr<Mesh::MeshInternal>& GetMesh() const;
-
 
 private:
 	MathUtil::Matrix<4, 4> _transform;
@@ -54,8 +60,9 @@ private:
 	Material _material;
 	unsigned _num_indices;
 	bool _cull_mode;
-	std::unordered_map <unsigned, std::vector<uint8_t>> _custom_uniform_data;
+	std::unordered_map<unsigned, std::vector<uint8_t>> _custom_uniform_data;
 
 	std::shared_ptr<Mesh::MeshInternal> _mesh;
+	std::weak_ptr<const WorldObjectInternal> _parent;
 };
 }

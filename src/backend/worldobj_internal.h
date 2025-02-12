@@ -15,7 +15,7 @@ namespace RenderingFramework3D {
 class WorldObject::WorldObjectInternal
 {
 public:
-	WorldObjectInternal() = default;
+	WorldObjectInternal();
 	WorldObjectInternal(const std::shared_ptr<Mesh::MeshInternal>& mesh);
 
 	void SetMesh(const std::shared_ptr<Mesh::MeshInternal>& mesh);
@@ -45,7 +45,7 @@ public:
 
 	MathUtil::Vec<3> GetPosition() const;
 	MathUtil::Matrix<4,4> GetTransform() const;
-	
+
 	MathUtil::Vec<3> GetLocalPosition() const;
 	const MathUtil::Matrix<4,4>& GetLocalTransform() const;
 

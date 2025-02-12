@@ -8,6 +8,18 @@ namespace RenderingFramework3D {
 
 using namespace MathUtil;
 
+
+WorldObject::WorldObjectInternal::WorldObjectInternal()
+    :
+    _transform(GetIdentity<4>()),
+    _material(),
+    _scale({1,1,1,1}),
+    _num_indices(0),
+    _cull_mode(true)
+{
+
+}
+
 WorldObject::WorldObjectInternal::WorldObjectInternal(const std::shared_ptr<Mesh::MeshInternal>& mesh)
     :
     _transform(GetIdentity<4>()),

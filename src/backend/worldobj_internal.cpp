@@ -138,7 +138,8 @@ void WorldObject::WorldObjectInternal::DetachReferenceFrame() {
 
 Vec<3> WorldObject::WorldObjectInternal::GetPosition() const {
     if(auto ref = _parent.lock()) {
-        return ref->GetPosition() + Vec<3>({_transform(0,3), _transform(1,3), _transform(2,3)});
+        Vec<4> pos4 = ref->GetTransform() * Vec<4>({_transform(0,3), _transform(1,3), _transform(2,3),1});
+        return Vec<3>({pos4(0), pos4(1), pos4(2)});
     }
     return Vec<3>({_transform(0,3), _transform(1,3), _transform(2,3)});
 }

@@ -15,6 +15,7 @@ public:
 	void SetPosition(const MathUtil::Vec<3>& position);
 	void Move(const MathUtil::Vec<3>& displacement);
 	void SetOrientationEulerXYZ(const MathUtil::Vec<3>& angles);
+	void SetRotationMatrix(const MathUtil::Matrix<3,3>& matrix);
 	void Rotate(const MathUtil::Vec<3>& axis, float radians);
 
 	void SetProjectionMode(ProjectionMode mode);

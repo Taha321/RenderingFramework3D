@@ -63,8 +63,12 @@ void WorldObject::Move(const Vec<3>& displacement) {
     _internal->Move(displacement);
 }
 
-void WorldObject::SetOrientationEulerXYZ(MathUtil::Vec<3>& angles) {
+void WorldObject::SetOrientationEulerXYZ(const MathUtil::Vec<3>& angles) {
     _internal->SetOrientationEulerXYZ(angles);
+}
+
+void WorldObject::SetRotationMatrix(const MathUtil::Matrix<3,3>& matrix) {
+    _internal->SetRotationMatrix(matrix);
 }
 
 void WorldObject::Rotate(const Vec<3>& axis, float radians) {

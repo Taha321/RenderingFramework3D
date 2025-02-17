@@ -82,6 +82,21 @@ void WorldObject::WorldObjectInternal::SetOrientationEulerXYZ(const Vec<3>& angl
     _transform(2,2) = cx * cy;
 }
 
+
+void WorldObject::WorldObjectInternal::SetRotationMatrix(const MathUtil::Matrix<3,3>& matrix) {
+    _transform(0,0) = matrix(0,0);
+    _transform(0,1) = matrix(0,1);
+    _transform(0,2) = matrix(0,2);
+
+    _transform(1,0) = matrix(1,0);
+    _transform(1,1) = matrix(1,1);
+    _transform(1,2) = matrix(1,2);
+
+    _transform(2,0) = matrix(2,0);
+    _transform(2,1) = matrix(2,1);
+    _transform(2,2) = matrix(2,2);
+}
+
 void WorldObject::WorldObjectInternal::Rotate(const Vec<3>& axis, float radians) {
 
     auto u = axis;

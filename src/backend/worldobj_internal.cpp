@@ -58,18 +58,28 @@ void WorldObject::WorldObjectInternal::SetPosition(const Vec<3>& position) {
     _transform(2, 3) = position(2);
 }
 
-void WorldObject::WorldObjectInternal::Move(const Vec<3> displacement) {
+void WorldObject::WorldObjectInternal::Move(const Vec<3>& displacement) {
     _transform(0, 3) += displacement(0);
     _transform(1, 3) += displacement(1);
     _transform(2, 3) += displacement(2);
 }
 
-void WorldObject::WorldObjectInternal::SetCustomUniformShaderInputData(unsigned binding, const void* data, unsigned bytes, unsigned offset) {
-    if (_custom_uniform_data.find(binding) == _custom_uniform_data.end()) {
-        _custom_uniform_data.insert({ binding, std::vector<uint8_t>(bytes + offset) });
-    }
-    memcpy(_custom_uniform_data[binding].data()+offset, data, bytes);
-    float* ptr = (float*)_custom_uniform_data[binding].data();
+void WorldObject::WorldObjectInternal::SetOrientationEulerXYZ(const Vec<3>& angles) {
+    float cx = cos(angles(0)), sx = sin(angles(0));
+    float cy = cos(angles(1)), sy = sin(angles(1));
+    float cz = cos(angles(2)), sz = sin(angles(2));
+
+    _transform(0,0) = cy * cz;
+    _transform(0,1) = -cy * sz;
+    _transform(0,2) = sy;
+
+    _transform(1,0) = cx * sz + sx * sy * cz;
+    _transform(1,1) = cx * cz - sx * sy * sz;
+    _transform(1,2) = -sx * cy;
+
+    _transform(2,0) = sx * sz - cx * sy * cz;
+    _transform(2,1) = sx * cz + cx * sy * sz;
+    _transform(2,2) = cx * cy;
 }
 
 void WorldObject::WorldObjectInternal::Rotate(const Vec<3>& axis, float radians) {
@@ -113,6 +123,14 @@ void WorldObject::WorldObjectInternal::Rotate(const Vec<3>& axis, float radians)
     _transform(1, 3) = tempy;
     _transform(2, 3) = tempz;
     //_transform.print();
+}
+
+void WorldObject::WorldObjectInternal::SetCustomUniformShaderInputData(unsigned binding, const void* data, unsigned bytes, unsigned offset) {
+    if (_custom_uniform_data.find(binding) == _custom_uniform_data.end()) {
+        _custom_uniform_data.insert({ binding, std::vector<uint8_t>(bytes + offset) });
+    }
+    memcpy(_custom_uniform_data[binding].data()+offset, data, bytes);
+    float* ptr = (float*)_custom_uniform_data[binding].data();
 }
 
 void WorldObject::WorldObjectInternal::SetScale(float x, float y, float z) {

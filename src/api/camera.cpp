@@ -40,6 +40,25 @@ void Camera::Move(const Vec<3>& displacement) {
 	_update_world_to_cam = true;
 }
 
+void Camera::SetOrientationEulerXYZ(const Vec<3>& angles) {
+    float cx = cos(angles(0)), sx = sin(angles(0));
+    float cy = cos(angles(1)), sy = sin(angles(1));
+    float cz = cos(angles(2)), sz = sin(angles(2));
+
+    _transform(0,0) = cy * cz;
+    _transform(0,1) = -cy * sz;
+    _transform(0,2) = sy;
+
+    _transform(1,0) = cx * sz + sx * sy * cz;
+    _transform(1,1) = cx * cz - sx * sy * sz;
+    _transform(1,2) = -sx * cy;
+
+    _transform(2,0) = sx * sz - cx * sy * cz;
+    _transform(2,1) = sx * cz + cx * sy * sz;
+    _transform(2,2) = cx * cy;
+
+	_update_world_to_cam = true;
+}
 
 void Camera::Rotate(const Vec<3>& axis, float radians) {
 

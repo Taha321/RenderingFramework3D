@@ -60,36 +60,31 @@ void WorldObject::SetPosition(const Vec<3>& position) {
 }
 
 void WorldObject::Move(const Vec<3>& displacement) {
-    OnMove(GetPosition()+displacement);
     _internal->Move(displacement);
+}
+
+void WorldObject::SetOrientationEulerXYZ(MathUtil::Vec<3>& angles) {
+    _internal->SetOrientationEulerXYZ(angles);
+}
+
+void WorldObject::Rotate(const Vec<3>& axis, float radians) {
+    _internal->Rotate(axis, radians);
 }
 
 void WorldObject::SetCustomUniformShaderInputData(unsigned binding, const void* data, unsigned bytes, unsigned offset) {
     _internal->SetCustomUniformShaderInputData(binding, data, bytes, offset);
 }
 
-void WorldObject::Rotate(const Vec<3>& axis, float radians) {
-    OnRotate(axis, radians);
-    _internal->Rotate(axis, radians);
-}
-
 void WorldObject::SetScale(float x, float y, float z) {
-    OnRescale(x,y,z);
     _internal->SetScale(x,y,z);
 }
 void WorldObject::SetScaleX(float x) {
-    auto& scale = GetObjectScale();
-    OnRescale(x,scale(1),scale(2));
     _internal->SetScaleX(x);
 }
 void WorldObject::SetScaleY(float y) {
-    auto& scale = GetObjectScale();
-    OnRescale(scale(0),y,scale(2));
     _internal->SetScaleY(y);
 }
 void WorldObject::SetScaleZ(float z) {
-    auto& scale = GetObjectScale();
-    OnRescale(scale(0),scale(1),z);
     _internal->SetScaleZ(z);
 }
 
@@ -113,12 +108,12 @@ Matrix<4,4> WorldObject::GetTransform() const {
     return _internal->GetTransform();
 }
 
-const Vec<4>& WorldObject::GetObjectScale() const {
-    return _internal->GetObjectScale();
-}
-
 const Matrix<4, 4>& WorldObject::GetLocalTransform() const {
     return _internal->GetLocalTransform();
+}
+
+const Vec<4>& WorldObject::GetObjectScale() const {
+    return _internal->GetObjectScale();
 }
 
 Material& WorldObject::GetMaterial() {

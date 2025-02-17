@@ -65,4 +65,10 @@ if(ENABLE_TESTS)
 
     #link test scene with rendering framework library
     target_link_libraries(dynmeshtest rfw3d)
+
+    #build test custompipeline test scene
+    add_executable(eulertest test/eulertest/test_scene.cpp)
+
+    #link test scene with rendering framework library
+    target_link_libraries(eulertest rfw3d)
 endif()

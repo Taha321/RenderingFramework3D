@@ -27,7 +27,8 @@ public:
 	bool GetBackFaceCulling() const;
 
 	void SetPosition(const MathUtil::Vec<3>& position);
-	void Move(const MathUtil::Vec<3> displacement);
+	void Move(const MathUtil::Vec<3>& displacement);
+	void SetOrientationEulerXYZ(const MathUtil::Vec<3>& angles);
 	void Rotate(const MathUtil::Vec<3>& axis, float radians);
 	void SetScale(float x, float y, float z);
 	void SetScaleX(float x);

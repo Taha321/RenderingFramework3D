@@ -41,6 +41,7 @@ public:
 	// movement and rotation wrt. parent object frame
 	void SetPosition(const MathUtil::Vec<3>& position);
 	void Move(const MathUtil::Vec<3>& displacement);
+	void SetOrientationEulerXYZ(MathUtil::Vec<3>& angles);
 	void Rotate(const MathUtil::Vec<3>& axis, float radians);
 
 	// scale object
@@ -71,12 +72,6 @@ public:
 	const std::vector<uint8_t>& GetCustomData(unsigned binding) const;
 
 	Mesh GetMesh() const;
-
-private:
-	//executed before rescaling, rotation or displacement
-	virtual void OnRescale(float x, float y, float z) {}
-	virtual void OnRotate(const MathUtil::Vec<3>& axis, float radians) {}
-	virtual void OnMove(const MathUtil::Vec<3>& position) {}
 
 private:
 	friend Renderer;

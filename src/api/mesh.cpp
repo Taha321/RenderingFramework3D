@@ -189,10 +189,10 @@ Mesh Mesh::Cube(const Renderer& renderer) {
 Mesh Mesh::Quad(const Renderer& renderer) {
     
     std::vector<Vec<4>> quadVerts = {
-        Vec<4>({1.0f,  1.0f, 0.0f, 1}),
-        Vec<4>({1.0f,  -1.0f, 0.0f, 1}),
-        Vec<4>({-1.0f,  -1.0f, 0.0f, 1}),
-        Vec<4>({-1.0f,  1.0f, 0.0f, 1}),
+        Vec<4>({0.5f,  0.5f, 0.0f, 1}),
+        Vec<4>({0.5f,  -0.5f, 0.0f, 1}),
+        Vec<4>({-0.5f,  -0.5f, 0.0f, 1}),
+        Vec<4>({-0.5f,  0.5f, 0.0f, 1}),
     };
 
     std::vector<Vec<3>> quadNormals = {

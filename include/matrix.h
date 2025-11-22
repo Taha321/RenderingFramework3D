@@ -11,7 +11,13 @@ class Matrix
 public:
 	Matrix() = default;
 	Matrix(float value) { for (int i = 0; i < (rows * columns); i++) _data[i] = value; }
-	Matrix(const std::array<float, rows* columns>& values) { memcpy(_data, values.data(), values.size()*sizeof(float)); }
+	Matrix(const std::array<float, rows* columns>& values) { 
+		for(int i = 0; i < rows; i++) {
+			for(int j = 0; j < columns; j++) {
+				_data[rows * j + i] = values[columns * i + j];
+			}
+		}
+	}
 	
 	~Matrix() {}
 	unsigned GetRows() const { return rows; }
@@ -53,7 +59,7 @@ public:
 		return result;
 	}
 	
-	Vec<columns> operator*(const Vec<columns>& v) const {
+	Vec<rows> operator*(const Vec<columns>& v) const {
 		Vec<rows> result(0);
 		for (unsigned i = 0; i < rows; i++) {
 			for (unsigned k = 0; k < columns; k++) {

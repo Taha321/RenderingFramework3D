@@ -7,6 +7,10 @@ set(CMAKE_BUILD_TYPE "Release" CACHE STRING "" FORCE)
 
 option(ENABLE_TESTS "Enable building tests" OFF)
 
+if(!VULKAN_DIR)
+    set(VULKAN_DIR $ENV{VULKAN_SDK})
+endif()
+
 # Set output directories for libraries and executables
 set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY $<1:${CMAKE_BINARY_DIR}/output/lib>)
 set(CMAKE_LIBRARY_OUTPUT_DIRECTORY $<1:${CMAKE_BINARY_DIR}/output/lib>)
